@@ -1,17 +1,17 @@
 from flask import Flask,render_template, session, redirect, request
 
-#from flask_hashing import Hashing
-#from flask_sqlalchemy import SQLAlchemy
-#from datetime import datetime
-'''
+from flask_hashing import Hashing
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
+
 from email_validator import validate_email, EmailNotValidError
 
 
 with open('config.json','r') as c:
     params = json.load(c)['params']
-'''
+
 app = Flask(__name__)
-'''
+
 def verify_email(em):
     try:
 
@@ -21,7 +21,7 @@ def verify_email(em):
     except EmailNotValidError as e:
 
         return False
-'''
+
 @app.route("/")
 def index():
     return render_template('index.html',message='Welcome')
@@ -49,7 +49,7 @@ def content():
 @app.route('/.well-known/pki-validation/')
 def content1():
     return redirect('/.well-known/pki-validation/E5459302673D53989275A6261CBA42EF.txt')
-'''
+
 @app.route('/sign-up',methods= ['GET','POST'])
 def _sign_up_():
     if request.method=='POST':
@@ -128,5 +128,5 @@ def log_out():
             return render_template('index.html',message='You Logout')
     else:
         return render_template('index.html',message='Already Logout')
-        '''
+        
 
