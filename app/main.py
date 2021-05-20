@@ -5,10 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 from email_validator import validate_email, EmailNotValidError
-'''
+
 with open('config.json','r') as c:
     params = json.load(c)['params']
-'''
+
 app = Flask(__name__)
 
 def verify_email(em):
