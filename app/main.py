@@ -1,15 +1,48 @@
-from flask import Flask,render_template, session, redirect, request
-
+from flask import Flask, render_template, session, redirect, request, json
 from flask_hashing import Hashing
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
 from email_validator import validate_email, EmailNotValidError
-'''
+import json
+
 with open('config.json','r') as c:
     params = json.load(c)['params']
-'''
+
+local_server = True
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
+
+app.secret_key = 'key'
+db = SQLAlchemy(app)
+hashing = Hashing(app)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if (local_server):
+    app.config["SQLALCHEMY_DATABASE_URI"] = params['local_uri']
+else:
+    app.config["SQLALCHEMY_DATABASE_URI"] = params['pro_uri']
+
+db = SQLAlchemy(app)
+
+
+class Blogs(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    slug = db.Column(db.String(100), unique=False, nullable=False)
+    title = db.Column(db.String(120),unique=False,nullable=False)
+    content = db.Column(db.String(),unique=False,nullable=False)
+    img = db.Column(db.VARCHAR(22),unique=True,nullable=False)
+    date_time = db.Column(db.String(15),unique=False,nullable=False)
+
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120),unique=False,nullable=False)
+    email = db.Column(db.VARCHAR(50),unique=True,nullable=False)
+    img = db.Column(db.VARCHAR(22),unique=True,nullable=True)
+    password = db.Column(db.VARCHAR(50),unique=True,nullable=False)
+    date_time = db.Column(db.String(6),unique=False,nullable=False)
 
 def verify_email(em):
     try:
@@ -20,6 +53,7 @@ def verify_email(em):
     except EmailNotValidError as e:
 
         return False
+
 
 @app.route("/")
 def index():
@@ -128,4 +162,5 @@ def log_out():
     else:
         return render_template('index.html',message='Already Logout')
         
+
 
