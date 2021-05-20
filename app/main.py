@@ -129,5 +129,3 @@ def log_out():
         return render_template('index.html',message='Already Logout')
         '''
 
-if __name__ == "__main__":
-		app.run()
