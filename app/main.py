@@ -2,7 +2,8 @@ from flask import Flask,render_template, session, redirect, request
 
 #from flask_hashing import Hashing
 #from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime'''
+#from datetime import datetime
+'''
 from email_validator import validate_email, EmailNotValidError
 
 
