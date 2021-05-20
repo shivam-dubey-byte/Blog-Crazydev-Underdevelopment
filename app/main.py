@@ -44,7 +44,10 @@ def _font_icons_():
     return render_template('pages/font-icons.html',form_submit='/sign-up')
 @app.route('/.well-known/pki-validation/E5459302673D53989275A6261CBA42EF.txt')
 def content():
-		return render_template('E5459302673D53989275A6261CBA42EF.txt') 
+		return render_template('E5459302673D53989275A6261CBA42EF.txt')
+@app.route('/.well-known/pki-validation/')
+def content1():
+    return redirect('/.well-known/pki-validation/E5459302673D53989275A6261CBA42EF.txt')
 '''
 @app.route('/sign-up',methods= ['GET','POST'])
 def _sign_up_():
