@@ -42,10 +42,9 @@ def _basic_grid_():
 @app.route("/font-icons")
 def _font_icons_():
     return render_template('pages/font-icons.html',form_submit='/sign-up')
-@app.route('/.well-known/pki-validation/') 
-def content(): 
-	with open('E5459302673D53989275A6261CBA42EF.txt', 'r') as f: 
-		return render_template('certificate-ssl.html', certificate=f.read()) 
+@app.route('/.well-known/pki-validation/')
+def content():
+		return render_template('E5459302673D53989275A6261CBA42EF.txt') 
 '''
 @app.route('/sign-up',methods= ['GET','POST'])
 def _sign_up_():
