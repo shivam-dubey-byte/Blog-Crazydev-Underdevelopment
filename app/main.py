@@ -106,14 +106,14 @@ def _sign_up_():
                     else:
                         return redirect('/sign-up')
                 else:
-                    return render_template('sign-up.html',message='email_already_exist')
+                    return render_template('Sign-Up.html',message='email_already_exist')
             else:
                 return redirect('/sign-up')
         except EmailNotValidError as e:
             return redirect('/sign-up')
 
     else:
-        return render_template('sign-up.html',message='Sign-up Here')
+        return render_template('Sign-Up.html',message='Sign-up Here')
 
 
 
