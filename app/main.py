@@ -128,3 +128,6 @@ def log_out():
     else:
         return render_template('index.html',message='Already Logout')
         '''
+
+if __name__ == "__main__":
+		app.run()
