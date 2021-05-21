@@ -11,6 +11,7 @@ flask-hashing = "*"
 datetime = "*"
 flask-sqlalchemy = "*"
 werkzeug = "*"
+flask-reuploaded = "*"
 
 [dev-packages]
 
