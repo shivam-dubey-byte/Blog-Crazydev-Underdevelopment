@@ -1,24 +1,32 @@
-from flask import Flask, render_template, session, redirect, request, json
+from flask import Flask, render_template, session, redirect, request, json, flash
 from flask_hashing import Hashing
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from email_validator import validate_email, EmailNotValidError
+from flask_uploads import IMAGES, UploadSet, configure_uploads
 import json
+import os
 
 with open('config.json','r') as c:
     params = json.load(c)['params']
 
 local_server = True
-UPLOAD_FOLDER = '/path/to/the/uploads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+#UPLOAD_FOLDER = '/path/to/the/uploads'
+#ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
-app.secret_key = 'key'
+photos = UploadSet("photos", IMAGES)
+app.config["UPLOADED_PHOTOS_DEST"] = "static/img"
+app.config["SECRET_KEY"] = os.urandom(24)
+configure_uploads(app, photos)
+
+#app.secret_key = 'key'
 db = SQLAlchemy(app)
 hashing = Hashing(app)
 
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+#app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 if (local_server):
     app.config["SQLALCHEMY_DATABASE_URI"] = params['local_uri']
@@ -161,6 +169,15 @@ def log_out():
             return render_template('index.html',message='You Logout')
     else:
         return render_template('index.html',message='Already Logout')
+
+@app.route("/upload/img", methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST' and 'photo' in request.files:
+        photos.save(request.files['photo'])
+        flash("Photo saved successfully.")
+        return render_template('upload.html')
+    return render_template('upload.html')
+
         
 
 
