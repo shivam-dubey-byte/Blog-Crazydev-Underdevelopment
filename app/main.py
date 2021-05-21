@@ -3,26 +3,18 @@ from flask_hashing import Hashing
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from email_validator import validate_email, EmailNotValidError
-from flask_uploads import IMAGES, UploadSet, configure_uploads
 import json
-import os
 
 with open('config.json','r') as c:
     params = json.load(c)['params']
 
 local_server = True
-
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
-photos = UploadSet("photos", IMAGES)
-app.config["UPLOADED_PHOTOS_DEST"] = "static/img"
-app.config["SECRET_KEY"] = os.urandom(24)
-configure_uploads(app, photos)
-
-#app.secret_key = os.urandom(24)
-
-
+app.secret_key = 'key'
 db = SQLAlchemy(app)
 hashing = Hashing(app)
 
@@ -159,13 +151,7 @@ def _sign_in_():
             return render_template('log-in.html', form_submit='/log-in', error='')
     else:
         return render_template('index.html',message='Already Loged-in')
-@app.route("/upload/?img", methods=['GET', 'POST'])
-def upload():
-    if request.method == 'POST' and 'photo' in request.files:
-        photos.save(request.files['photo'])
-        flash("Photo saved successfully.")
-        return render_template('upload.html')
-    return render_template('upload.html')
+
 
 @app.route('/logout')
 def log_out():
